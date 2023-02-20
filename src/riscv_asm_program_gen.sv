@@ -328,11 +328,11 @@ class riscv_asm_program_gen extends uvm_object;
       instr_stream.push_back(".option norvc;");
     end
     str.push_back(".include \"user_init.s\"");
-    str.push_back($sformatf("csrr x5, 0x%0x", MHARTID));
-    for (int hart = 0; hart < cfg.num_of_harts; hart++) begin
-      str = {str, $sformatf("li x6, %0d", hart),
-                  $sformatf("beq x5, x6, %0df", hart)};
-    end
+    // str.push_back($sformatf("csrr x5, 0x%0x", MHARTID));
+    // for (int hart = 0; hart < cfg.num_of_harts; hart++) begin
+      // str = {str, $sformatf("li x6, %0d", hart),
+                  // $sformatf("beq x5, x6, %0df", hart)};
+    // end
     gen_section("_start", str);
     for (int hart = 0; hart < cfg.num_of_harts; hart++) begin
       instr_stream.push_back($sformatf("%0d: la x%0d, h%0d_start", hart, cfg.scratch_reg, hart));
@@ -466,8 +466,8 @@ class riscv_asm_program_gen extends uvm_object;
     if (SUPERVISOR_MODE inside {supported_privileged_mode}) begin
       misa[MISA_EXT_S] = 1'b1;
     end
-    instr_stream.push_back({indent, $sformatf("li x%0d, 0x%0x", cfg.gpr[0], misa)});
-    instr_stream.push_back({indent, $sformatf("csrw 0x%0x, x%0d", MISA, cfg.gpr[0])});
+    // instr_stream.push_back({indent, $sformatf("li x%0d, 0x%0x", cfg.gpr[0], misa)});
+    // instr_stream.push_back({indent, $sformatf("csrw 0x%0x, x%0d", MISA, cfg.gpr[0])});
   endfunction
 
   // Write to the signature_addr with values to indicate to the core testbench
@@ -527,7 +527,7 @@ class riscv_asm_program_gen extends uvm_object;
     bit [DATA_WIDTH-1:0] reg_val;
     // Init general purpose registers with random values
     for(int i = 0; i < NUM_GPR; i++) begin
-      if (i inside {cfg.sp, cfg.tp}) continue;
+      if (i inside {cfg.sp}) continue;
       `DV_CHECK_STD_RANDOMIZE_WITH_FATAL(reg_val,
         reg_val dist {
           'h0                         :/ 1,

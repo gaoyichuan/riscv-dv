@@ -507,7 +507,7 @@ def run_assembly(asm_test, iss_yaml, isa, mabi, gcc_opts, iss_opts, output_dir,
         base_cmd = parse_iss_yaml(iss, iss_yaml, isa, setting_dir, debug_cmd)
         logging.info("[{}] Running ISS simulation: {}".format(iss, elf))
         cmd = get_iss_cmd(base_cmd, elf, log)
-        run_cmd(cmd, 10, debug_cmd=debug_cmd)
+        run_cmd(cmd, 60, debug_cmd=debug_cmd)
         logging.info("[{}] Running ISS simulation: {} ...done".format(iss, elf))
     if len(iss_list) == 2:
         compare_iss_log(iss_list, log_list, report)
@@ -599,7 +599,7 @@ def run_c(c_test, iss_yaml, isa, mabi, gcc_opts, iss_opts, output_dir,
         base_cmd = parse_iss_yaml(iss, iss_yaml, isa, setting_dir, debug_cmd)
         logging.info("[{}] Running ISS simulation: {}".format(iss, elf))
         cmd = get_iss_cmd(base_cmd, elf, log)
-        run_cmd(cmd, 10, debug_cmd=debug_cmd)
+        run_cmd(cmd, 60, debug_cmd=debug_cmd)
         logging.info("[{}] Running ISS simulation: {} ...done".format(iss, elf))
     if len(iss_list) == 2:
         compare_iss_log(iss_list, log_list, report)
@@ -816,7 +816,7 @@ def parse_args(cwd):
                         help="Address that privileged CSR test writes to at EOT")
     parser.add_argument("--iss_opts", type=str, default="",
                         help="Any ISS command line arguments")
-    parser.add_argument("--iss_timeout", type=int, default=10,
+    parser.add_argument("--iss_timeout", type=int, default=60,
                         help="ISS sim timeout limit in seconds")
     parser.add_argument("--iss_yaml", type=str, default="",
                         help="ISS setting YAML")
@@ -943,7 +943,7 @@ def load_config(args, cwd):
         elif args.target == "rv32imcb":
             args.mabi = "ilp32"
             args.isa = "rv32imcb"
-        elif args.target == "rv32i":
+        elif args.target == "rv32i" or args.target == "cod_riscv":
             args.mabi = "ilp32"
             args.isa = "rv32i"
         elif args.target == "rv64imc":

@@ -138,7 +138,7 @@ class riscv_jump_instr extends riscv_directed_instr_stream;
       jump = riscv_instr::get_rand_instr(.include_instr({JAL, JALR, C_JALR}));
     end
     addi = riscv_instr::get_instr(ADDI);
-    branch = riscv_instr::get_rand_instr(.include_instr({BEQ, BNE, BLT, BGE, BLTU, BGEU}));
+    branch = riscv_instr::get_rand_instr(.include_instr({BEQ, BNE}));
   endfunction
 
   function void post_randomize();

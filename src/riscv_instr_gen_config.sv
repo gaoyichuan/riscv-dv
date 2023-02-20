@@ -116,8 +116,10 @@ class riscv_instr_gen_config extends uvm_object;
   //-----------------------------------------------------------------------------
 
   mem_region_t mem_region[$] = '{
-    '{name:"region_0", size_in_bytes: 4096,      xwr: 3'b111},
-    '{name:"region_1", size_in_bytes: 4096 * 16, xwr: 3'b111}
+    '{name:"baseram_0", size_in_bytes: 1024 * 64, xwr: 3'b111},   // 64KB, 0x8000_0000 - 0x8000_FFFF
+    '{name:"baseram_1", size_in_bytes: 1024 * 64, xwr: 3'b111},   // 64KB, 0x803F_0000 - 0x803F_FFFF
+    '{name:"extram_0",  size_in_bytes: 1024 * 64, xwr: 3'b111},   // 64KB, 0x8040_0000 - 0x8040_FFFF
+    '{name:"extram_1",  size_in_bytes: 1024 * 64, xwr: 3'b111}    // 64KB, 0x807F_0000 - 0x807F_FFFF
   };
 
   // Dedicated shared memory region for multi-harts atomic operations
@@ -159,12 +161,12 @@ class riscv_instr_gen_config extends uvm_object;
   // Options to turn off some specific types of instructions
   bit                    no_branch_jump;     // No branch/jump instruction
   bit                    no_load_store;      // No load/store instruction
-  bit                    no_csr_instr;       // No csr instruction
+  bit                    no_csr_instr = 1;       // No csr instruction
   bit                    no_ebreak = 1;      // No ebreak instruction
   // Only enable ecall if you have overriden the test_done mechanism.
   bit                    no_ecall = 1;       // No ecall instruction
   bit                    no_dret = 1;        // No dret instruction
-  bit                    no_fence;           // No fence instruction
+  bit                    no_fence = 1;           // No fence instruction
   bit                    no_wfi = 1;         // No WFI instruction
   bit                    enable_unaligned_load_store;
   int                    illegal_instr_ratio;
@@ -195,7 +197,7 @@ class riscv_instr_gen_config extends uvm_object;
   // Generate a bare program without any init/exit/error handling/page table routines
   // The generated program can be integrated with a larger program.
   // Note that the bare mode program is not expected to run in standalone mode
-  bit                    bare_program_mode;
+  bit                    bare_program_mode = 1;
   // Enable accessing illegal CSR instruction
   // - Accessing non-existence CSR
   // - Accessing CSR with wrong privileged mode

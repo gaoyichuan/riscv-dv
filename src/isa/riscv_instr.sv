@@ -235,6 +235,7 @@ class riscv_instr extends uvm_object;
        end
      end
      // Shallow copy for all relevant fields, avoid using create() to improve performance
+   //   $display($sformatf("Get instr %0s", name.name()));
      instr_h = new instr_template[name];
      return instr_h;
   endfunction : get_rand_instr

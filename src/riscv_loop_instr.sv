@@ -71,7 +71,7 @@ class riscv_loop_instr extends riscv_rand_instr_stream;
       if (!cfg.disable_compressed_instr) {
         branch_type[i] inside {C_BNEZ, C_BEQZ, BEQ, BNE, BLTU, BLT, BGEU, BGE};
       } else {
-        branch_type[i] inside {BEQ, BNE, BLTU, BLT, BGEU, BGE};
+        branch_type[i] inside {BEQ, BNE};
       }
     }
     foreach(loop_init_val[i]) {

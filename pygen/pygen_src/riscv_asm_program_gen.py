@@ -264,11 +264,11 @@ class riscv_asm_program_gen:
         self.instr_stream.extend((".include \"user_define.h\"", ".globl _start", ".section .text"))
         if cfg.disable_compressed_instr:
             self.instr_stream.append(".option norvc;")
-        header_string.extend((".include \"user_init.s\"",
-                              "csrr x5, {}".format(hex(privileged_reg_t.MHARTID))))
-        for hart in range(cfg.num_of_harts):
-            header_string.extend(("li x6, {}".format(hart),
-                                  "beq x5, x6, {}f".format(hart)))
+        header_string.extend((".include \"user_init.s\""))
+                            #   "csrr x5, {}".format(hex(privileged_reg_t.MHARTID))))
+        # for hart in range(cfg.num_of_harts):
+            # header_string.extend(("li x6, {}".format(hart),
+                                #   "beq x5, x6, {}f".format(hart)))
         self.gen_section("_start", header_string)
         for hart in range(cfg.num_of_harts):
             self.instr_stream.extend(("{}: la x{}, h{}_start".format(hart, cfg.scratch_reg, hart),

@@ -21,13 +21,24 @@ SECTIONS
   . = 0x80000000;
   .text : { *(.text) }
   . = ALIGN(0x1000);
-  .tohost : { *(.tohost) }
-  . = ALIGN(0x1000);
   .page_table : { *(.page_table) }
-  .data : { *(.data) }
   .user_stack : { *(.user_stack) }
   .kernel_data : { *(.kernel_data) }
   .kernel_stack : { *(.kernel_stack) }
   .bss : { *(.bss) }
   _end = .;
+
+  . = 0x80300000;
+  .baseram_0 : { *(.baseram_0) }
+  . = 0x803F0000;
+  .baseram_1 : { *(.baseram_1) }
+
+  . = 0x80400000;
+  .data : { *(.data) }
+  .tohost : { *(.tohost) }  /* "fixed" tohost at 0x80400000 */
+
+  . = ALIGN(0x10000);
+  .extram_0 : { *(.extram_0) }
+  . = 0x807F0000;
+  .extram_1 : { *(.extram_1) }
 }
